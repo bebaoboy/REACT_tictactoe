@@ -8,7 +8,7 @@ function Square({ value, onSquareClick, highlight }) {
   );
 }
 
-function calculateWinner(squares) {
+function calculateWinner(squares, currentMove) {
   if (!squares) return;
   const lines = [
     [0, 1, 2],
@@ -26,6 +26,7 @@ function calculateWinner(squares) {
       return lines[i];
     }
   }
+  if (currentMove == 9) return [-1, -1, -1];
   return null;
 }
 
@@ -73,11 +74,11 @@ export default function Game() {
   const [asc, setAsc] = useState(true);
   const xIsNext = currentMove % 2 === 0; // x always goes first
   const currentSquares = history[currentMove].sq;
-  const winner = currentMove !== 9 ? calculateWinner(currentSquares) : [-1, -1, -1];
+  const winner = calculateWinner(currentSquares, currentMove);
 
   function handlePlay(squares, i) {
 
-    if (calculateWinner(squares)) {
+    if (calculateWinner(squares, currentMove)) {
       return;
     }
 
