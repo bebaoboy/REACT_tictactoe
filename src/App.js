@@ -32,7 +32,8 @@ function calculateWinner(squares) {
 function Board({ xIsNext, squares, onPlay, winner, justMoved }) {
   let status;
   if (winner) {
-    status = 'Winner: ' + squares[winner[0]];
+    if (winner[0] === -1) status = "Draw";
+    else status = 'Winner: ' + squares[winner[0]];
   } else {
     status = 'Next player: ' + (xIsNext ? 'X' : 'O');
   }
@@ -72,16 +73,11 @@ export default function Game() {
   const [asc, setAsc] = useState(true);
   const xIsNext = currentMove % 2 === 0; // x always goes first
   const currentSquares = history[currentMove].sq;
-  const winner = calculateWinner(currentSquares);
+  const winner = currentMove !== 9 ? calculateWinner(currentSquares) : [-1, -1, -1];
 
   function handlePlay(squares, i) {
 
     if (calculateWinner(squares)) {
-      // if (history[currentMove].sq[winner[0]] !== '*')
-      // {
-      //   winner.map((m) => (history[currentMove].sq[m] = '*'));
-      //   setHistory(history.slice());
-      // }
       return;
     }
 
